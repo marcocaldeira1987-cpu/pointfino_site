@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PointFino Barbershop | Precisão, Estilo & Experiência</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tipografia Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Animações AOS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Outfit', sans-serif; background-color: #0b0f19; color: #f1f5f9; }
+        
+        .pointfino-neon {
+            color: #fff;
+            text-shadow:
+                0 0 5px #fff,
+                0 0 10px #10b981,
+                0 0 20px #10b981,
+                0 0 40px #059669,
+                0 0 80px #059669;
+            animation: neonGlow 3s infinite alternate;
+        }
+
+        @keyframes neonGlow {
+            0% { text-shadow: 0 0 5px #fff, 0 0 10px #10b981, 0 0 20px #10b981, 0 0 40px #059669; }
+            100% { text-shadow: 0 0 8px #fff, 0 0 15px #34d399, 0 0 30px #10b981, 0 0 60px #059669; }
+        }
+
+        .glass-panel {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(15, 23, 42, 0.85));
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+    </style>
+</head>
+<body class="antialiased selection:bg-emerald-500 selection:text-white">
+
+    <!-- Navegação Superior -->
+    <nav class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center border-b border-slate-800/80 sticky top-0 bg-[#0b0f19]/90 backdrop-blur-md z-40">
+        <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_#10b981]"></span>
+            <span class="text-xl font-black tracking-wider pointfino-neon">POINTFINO</span>
+        </div>
+        <button onclick="abrirModal('Qualquer Barbeiro')" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold text-xs px-5 py-2 rounded-full shadow-lg shadow-emerald-500/20 uppercase tracking-wider">
+            Reservar
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-[75vh] flex items-center justify-center px-4 py-16 text-center overflow-hidden bg-slate-950">
+        <div class="absolute inset-0 z-0">
+            <img src="/static/espaco.jpg" alt="PointFino Barbershop Espaço" class="w-full h-full object-cover opacity-25 scale-105">
+            <div class="absolute inset-0 bg-gradient-to-t from-[#0b0f19] via-slate-950/70 to-transparent"></div>
+        </div>
+
+        <div class="relative z-10 max-w-3xl mx-auto" data-aos="fade-up">
+            <span class="inline-flex items-center gap-1.5 py-1 px-3 bg-emerald-500/10 border border-emerald-500/30 rounded-full text-emerald-400 text-[11px] font-bold uppercase tracking-widest mb-5">
+                ✂️ Mais do que um corte, uma experiência
+            </span>
+            <h1 class="text-4xl sm:text-6xl font-black tracking-tight leading-none mb-5 text-white">
+                Cortes que fazem a <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">diferença.</span>
+            </h1>
+            <p class="text-base sm:text-lg text-slate-300 max-w-xl mx-auto mb-8 font-light leading-relaxed">
+                Precisão e estilo em mãos de confiança na Covilhã.
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center gap-3">
+                <button onclick="abrirModal('Qualquer Barbeiro')" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-extrabold px-8 py-3.5 rounded-xl shadow-lg shadow-emerald-500/25 text-base">
+                    Agendar Horário
+                </button>
+                <a href="#servicos" class="bg-slate-900 border border-slate-700 text-slate-200 font-semibold px-7 py-3.5 rounded-xl text-base hover:bg-slate-800 transition-colors">
+                    Ver Tabela
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vídeo Amplo do Espaço -->
+    <section class="max-w-5xl mx-auto px-4 py-16" data-aos="fade-up">
+        <div class="text-center max-w-xl mx-auto mb-8">
+            <span class="text-emerald-400 font-bold text-xs uppercase tracking-widest block mb-1">Tour Virtual</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Entra na PointFino</h2>
+        </div>
+        
+        <div class="glass-panel p-3 rounded-2xl shadow-2xl overflow-hidden border border-slate-800">
+            <div class="rounded-xl overflow-hidden aspect-video w-full bg-slate-900 relative">
+                <video controls autoplay muted loop playsinline class="w-full h-full object-cover">
+                    <source src="/static/video_espaco.mp4" type="video/mp4">
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <!-- Métricas -->
+    <section class="bg-slate-900/40 border-y border-slate-800/60 py-10 my-6">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-3 gap-4 text-center" data-aos="zoom-in">
+                <div class="glass-panel p-5 rounded-2xl border-t-2 border-emerald-500">
+                    <span class="block text-2xl sm:text-4xl font-black text-emerald-400">250+</span>
+                    <span class="text-[10px] sm:text-xs font-medium uppercase tracking-wider text-slate-400">Cortes</span>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl border-t-2 border-teal-500">
+                    <span class="block text-2xl sm:text-4xl font-black text-teal-400">700+</span>
+                    <span class="text-[10px] sm:text-xs font-medium uppercase tracking-wider text-slate-400">Clientes</span>
+                </div>
+                <div class="glass-panel p-5 rounded-2xl border-t-2 border-cyan-500">
+                    <span class="block text-2xl sm:text-4xl font-black text-cyan-400">400+</span>
+                    <span class="text-[10px] sm:text-xs font-medium uppercase tracking-wider text-slate-400">Visuais</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Equipa -->
+    <section class="max-w-7xl mx-auto px-4 py-16">
+        <div class="text-center max-w-2xl mx-auto mb-12" data-aos="fade-up">
+            <span class="text-emerald-400 font-bold text-xs uppercase tracking-widest block mb-2">A Nossa Equipa</span>
+            <h2 class="text-3xl font-extrabold text-white">Escolhe o teu Barbeiro</h2>
+            <p class="text-slate-400 text-sm mt-2">Clica para agendar diretamente com o profissional.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+            {% for membro in equipa %}
+            <div class="glass-panel rounded-3xl overflow-hidden shadow-xl border border-slate-800" data-aos="fade-up">
+                <div class="h-72 overflow-hidden relative">
+                    <img src="{{ membro.foto }}" alt="{{ membro.nome }}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                </div>
+                <div class="p-6 text-center -mt-10 relative bg-slate-900/95 backdrop-blur border-t border-slate-800 rounded-t-2xl">
+                    <h3 class="text-2xl font-bold text-white">{{ membro.nome }}</h3>
+                    <p class="text-slate-400 text-xs font-light mt-0.5 mb-5">{{ membro.cargo }}</p>
+                    <button onclick="abrirModal('{{ membro.nome }}')" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 px-4 rounded-xl shadow-lg shadow-emerald-500/20 text-sm transition-all uppercase tracking-wider">
+                        Agendar com {{ membro.nome.split()[0] }}
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+
+    <!-- Galeria Imersiva -->
+    <section class="bg-slate-900/30 py-16 border-y border-slate-800/60 overflow-hidden" data-aos="fade-up">
+        <div class="max-w-7xl mx-auto px-4 mb-8 text-center">
+            <span class="text-emerald-400 font-bold text-xs uppercase tracking-widest block mb-1">Galeria em Destaque</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Trabalhos Recentes</h2>
+            <p class="text-slate-400 text-xs mt-1">Desliza para ver o nível de detalhe e precisão.</p>
+        </div>
+
+        <div class="flex overflow-x-auto no-scrollbar snap-x snap-mandatory px-4 gap-4 max-w-6xl mx-auto">
+            <div class="min-w-[280px] sm:min-w-[340px] h-[420px] rounded-3xl overflow-hidden relative snap-center flex-shrink-0 border border-slate-800 group shadow-2xl">
+                <img src="/static/corte1.jpg" alt="Corte 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 right-6">
+                    <span class="text-emerald-400 font-bold text-[10px] uppercase tracking-widest bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full">Fade & Precisão</span>
+                    <h3 class="text-xl font-bold text-white mt-2">Estilo Assinatura</h3>
+                </div>
+            </div>
+            <div class="min-w-[280px] sm:min-w-[340px] h-[420px] rounded-3xl overflow-hidden relative snap-center flex-shrink-0 border border-slate-800 group shadow-2xl">
+                <img src="/static/corte2.jpg" alt="Corte 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 right-6">
+                    <span class="text-teal-400 font-bold text-[10px] uppercase tracking-widest bg-teal-500/10 border border-teal-500/30 px-3 py-1 rounded-full">Modern Crop</span>
+                    <h3 class="text-xl font-bold text-white mt-2">Textura & Linhas</h3>
+                </div>
+            </div>
+            <div class="min-w-[280px] sm:min-w-[340px] h-[420px] rounded-3xl overflow-hidden relative snap-center flex-shrink-0 border border-slate-800 group shadow-2xl">
+                <img src="/static/corte3.jpg" alt="Corte 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 right-6">
+                    <span class="text-cyan-400 font-bold text-[10px] uppercase tracking-widest bg-cyan-500/10 border border-cyan-500/30 px-3 py-1 rounded-full">Classic Style</span>
+                    <h3 class="text-xl font-bold text-white mt-2">Elegância Intemporal</h3>
+                </div>
+            </div>
+            <div class="min-w-[280px] sm:min-w-[340px] h-[420px] rounded-3xl overflow-hidden relative snap-center flex-shrink-0 border border-slate-800 group shadow-2xl">
+                <img src="/static/corte4.jpg" alt="Corte 4" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
+                <div class="absolute bottom-6 left-6 right-6">
+                    <span class="text-emerald-400 font-bold text-[10px] uppercase tracking-widest bg-emerald-500/10 border border-emerald-500/30 px-3 py-1 rounded-full">Master Barber</span>
+                    <h3 class="text-xl font-bold text-white mt-2">Detalhe Perfeito</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabela de Serviços Compacta -->
+    <section id="servicos" class="max-w-5xl mx-auto px-4 py-16" data-aos="fade-up">
+        <div class="text-center max-w-xl mx-auto mb-10">
+            <span class="text-emerald-400 font-bold text-xs uppercase tracking-widest block mb-1">Preçário Oficial</span>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Serviços & Valores</h2>
+            <p class="text-slate-400 text-xs mt-1">Transparência e rigor em cada detalhe.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+            <div class="glass-panel px-5 py-3.5 rounded-xl flex items-center justify-between border border-slate-800">
+                <div><h4 class="text-sm font-bold text-white">Corte</h4><span class="text-[11px] text-slate-400">30 min</span></div>
+                <div class="text-right"><span class="text-base font-black text-emerald-400">12,00€</span></div>
+            </div>
+            <div class="glass-panel px-5 py-3.5 rounded-xl flex items-center justify-between border border-slate-800">
+                <div><h4 class="text-sm font-bold text-white">Barba</h4><span class="text-[11px] text-slate-400">30 min</span></div>
+                <div class="text-right"><span class="text-base font-black text-emerald-400">7,00€</span></div>
+            </div>
+            <div class="glass-panel px-5 py-3.5 rounded-xl flex items-center justify-between border border-slate-800">
+                <div><h4 class="text-sm font-bold text-white">Corte e Barba</h4><span class="text-[11px] text-slate-400">60 min</span></div>
+                <div class="text-right"><span class="text-base font-black text-emerald-400">16,00€</span></div>
+            </div>
+            <div class="glass-panel px-5 py-3.5 rounded-xl flex items-center justify-between border border-slate-800">
+                <div><h4 class="text-sm font-bold text-white">Corte e Barboterapia</h4><span class="text-[11px] text-slate-400">60 min</span></div>
+                <div class="text-right"><span class="text-base font-black text-emerald-400">17,00€</span></div>
+            </div>
+            <div class="glass-panel px-5 py-3.5 rounded-xl flex items-center justify-between border border-slate-800">
+                <div><h4 class="text-sm font-bold text-white">Barboterapia</h4><span class="text-[11px] text-slate-400">30 min</span></div>
+                <div class="text-right"><span class="text-base font-black text-emerald-400">8,00€</span></div>
+            </div>
+            <div class="glass-panel px-5 py-3.5 rounded-xl flex items-center justify-between border border-slate-800">
+                <div><h4 class="text-sm font-bold text-white">Corte, Barba e Sobrancelha</h4><span class="text-[11px] text-slate-400">60 min</span></div>
+                <div class="text-right"><span class="text-base font-black text-emerald-400">18,00€</span></div>
+            </div>
+            <div class="glass-panel px-5 py-3.5 rounded-xl flex items-center justify-between border border-slate-800">
+                <div><h4 class="text-sm font-bold text-white">Corte e Sobrancelha</h4><span class="text-[11px] text-slate-400">30 min</span></div>
+                <div class="text-right"><span class="text-base font-black text-emerald-400">14,00€</span></div>
+            </div>
+            <div class="glass-panel px-5 py-3.5 rounded-xl flex items-center justify-between border border-slate-800">
+                <div><h4 class="text-sm font-bold text-white">Corte de Máquina (um só pente)</h4><span class="text-[11px] text-slate-400">30 min</span></div>
+                <div class="text-right"><span class="text-base font-black text-emerald-400">9,00€</span></div>
+            </div>
+            <div class="glass-panel px-5 py-3.5 rounded-xl flex items-center justify-between border border-slate-800">
+                <div><h4 class="text-sm font-bold text-white">Cera Quente Ouvido / Nariz</h4><span class="text-[11px] text-slate-400">30 / 60 min</span></div>
+                <div class="text-right"><span class="text-base font-black text-emerald-400">4,00€ - 7,00€</span></div>
+            </div>
+            <div class="glass-panel px-5 py-3.5 rounded-xl flex items-center justify-between border border-slate-800">
+                <div><h4 class="text-sm font-bold text-white">Esfoliação</h4><span class="text-[11px] text-slate-400">30 min</span></div>
+                <div class="text-right"><span class="text-base font-black text-emerald-400">5,00€</span></div>
+            </div>
+            <div class="glass-panel px-5 py-3.5 rounded-xl flex items-center justify-between border border-slate-800">
+                <div><h4 class="text-sm font-bold text-white">Black Mask</h4><span class="text-[11px] text-slate-400">30 min</span></div>
+                <div class="text-right"><span class="text-base font-black text-emerald-400">7,00€</span></div>
+            </div>
+            <div class="glass-panel px-5 py-3.5 rounded-xl flex items-center justify-between border border-slate-800">
+                <div><h4 class="text-sm font-bold text-white">Luzes (mechas) / Platinado</h4><span class="text-[11px] text-slate-400">150 min</span></div>
+                <div class="text-right"><span class="text-base font-black text-emerald-400">50,00€</span></div>
+            </div>
+            <div class="glass-panel px-5 py-3.5 rounded-xl flex items-center justify-between border border-slate-800">
+                <div><h4 class="text-sm font-bold text-white">Pigmentação Cabelo / Barba</h4><span class="text-[11px] text-slate-400">30 min</span></div>
+                <div class="text-right"><span class="text-base font-black text-emerald-400">10,00€</span></div>
+            </div>
+            <div class="glass-panel px-5 py-3.5 rounded-xl flex items-center justify-between border border-slate-800">
+                <div><h4 class="text-sm font-bold text-white">Mask Argan</h4><span class="text-[11px] text-slate-400">30 min</span></div>
+                <div class="text-right"><span class="text-base font-black text-emerald-400">7,00€</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL DE AGENDAMENTO VIA WHATSAPP EMPRESARIAL -->
+    <div id="modalAgendamento" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md hidden">
+        <div class="glass-panel rounded-3xl p-6 sm:p-8 border border-emerald-500/30 shadow-2xl w-full max-w-lg relative max-h-[90vh] overflow-y-auto">
+            
+            <button onclick="fecharModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white text-2xl font-bold">&times;</button>
+
+            <div class="text-center mb-6">
+                <span class="text-emerald-400 font-bold text-xs uppercase tracking-widest block mb-1">Marcação Direta</span>
+                <h2 id="tituloModal" class="text-2xl font-extrabold text-white">Garante a Tua Cadeira</h2>
+                <p class="text-slate-400 text-xs mt-1">Envia o pedido instantaneamente via WhatsApp.</p>
+            </div>
+
+            <form onsubmit="enviarParaWhatsApp(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">O teu Nome *</label>
+                    <input type="text" id="inputNome" required placeholder="Ex: João Silva" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">Telemóvel *</label>
+                    <input type="tel" id="inputTelemovel" required placeholder="Ex: 912 345 678" class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-emerald-500">
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">Serviço e Preço *</label>
+                        <select id="selectServicoModal" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-3 text-slate-100 text-xs focus:outline-none focus:border-emerald-500">
+                            <option value="Corte (12.00€)">Corte — 12.00€</option>
+                            <option value="Barba (7.00€)">Barba — 7.00€</option>
+                            <option value="Corte e Barba (16.00€)">Corte e Barba — 16.00€</option>
+                            <option value="Corte e Barboterapia (17.00€)">Corte e Barboterapia — 17.00€</option>
+                            <option value="Barboterapia (8.00€)">Barboterapia — 8.00€</option>
+                            <option value="Corte, Barba e Sobrancelha (18.00€)">Corte, Barba e Sobrancelha — 18.00€</option>
+                            <option value="Corte e Sobrancelha (14.00€)">Corte e Sobrancelha — 14.00€</option>
+                            <option value="Corte de máquina (9.00€)">Corte de máquina — 9.00€</option>
+                            <option value="Cera Quente Ouvido / Nariz (4.00€)">Cera Quente Ouvido / Nariz — 4.00€</option>
+                            <option value="Esfoliação (5.00€)">Esfoliação — 5.00€</option>
+                            <option value="Black Mask (7.00€)">Black Mask — 7.00€</option>
+                            <option value="Luzes / Platinado (50.00€)">Luzes / Platinado — 50.00€</option>
+                            <option value="Pigmentação Cabelo / Barba (10.00€)">Pigmentação Cabelo / Barba — 10.00€</option>
+                            <option value="Mask Argan (7.00€)">Mask Argan — 7.00€</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">Barbeiro *</label>
+                        <select id="selectBarbeiroModal" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-3 text-slate-100 text-xs focus:outline-none focus:border-emerald-500">
+                            <option value="Pedro Cristóvão">Pedro Cristóvão</option>
+                            <option value="Oliveira">Oliveira</option>
+                        </select>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">Data e Hora Preferida *</label>
+                    <input type="datetime-local" id="inputDataHora" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-emerald-500">
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black py-3.5 rounded-xl shadow-lg text-sm uppercase tracking-wider flex items-center justify-center gap-2">
+                    <span>Enviar Pedido por WhatsApp</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Rodapé -->
+    <footer class="border-t border-slate-800 bg-slate-950 py-16 text-slate-400 text-xs">
+        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-10 text-center md:text-left items-center">
+            <div>
+                <span class="text-base font-black text-white pointfino-neon tracking-wider block mb-2">POINTFINO BARBERSHOP</span>
+                <p class="font-light text-slate-400">Rua dos Cedros, Covilhã</p>
+                <p class="font-light text-slate-500 mt-1">Segunda a Sábado: 09:30 – 19:30</p>
+            </div>
+            <div class="flex flex-col items-center justify-center">
+                <span class="text-emerald-400 font-bold uppercase tracking-wider text-[10px] mb-1">Atendimento Telefónico</span>
+                <a href="tel:961358317" class="text-lg font-black text-white hover:text-emerald-400 transition-colors flex items-center gap-2">
+                    <span>📞 961 358 317</span>
+                </a>
+            </div>
+            <div class="flex flex-col items-center md:items-end">
+                <span class="text-emerald-400 font-bold uppercase tracking-wider text-[10px] mb-2">Segue a Página Oficial</span>
+                <a href="https://instagram.com/pointfinobarber" target="_blank" class="bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:opacity-90 text-white font-bold px-6 py-3 rounded-xl shadow-lg flex items-center gap-2.5 transition-all text-sm">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                    <span>Instagram Oficial</span>
+                </a>
+            </div>
+        </div>
+        <div class="text-center mt-12 pt-6 border-t border-slate-900 text-[10px] text-zinc-500">
+            &copy; 2026 PointFino Barbershop. Desenvolvido por Nexus Design.
+        </div>
+    </footer>
+
+    <!-- Scripts de Interação e WhatsApp -->
+    <script>
+        function abrirModal(barbeiro) {
+            const modal = document.getElementById('modalAgendamento');
+            const select = document.getElementById('selectBarbeiroModal');
+            const titulo = document.getElementById('tituloModal');
+
+            if(barbeiro !== 'Qualquer Barbeiro') {
+                select.value = barbeiro;
+                titulo.innerText = "Agendar com " + barbeiro;
+            } else {
+                titulo.innerText = "Garante a Tua Cadeira";
+            }
+
+            modal.classList.remove('hidden');
+        }
+
+        function fecharModal() {
+            const modal = document.getElementById('modalAgendamento');
+            modal.classList.add('hidden');
+        }
+
+        function enviarParaWhatsApp(event) {
+            event.preventDefault(); // Evita recarregar a página
+
+            const nome = document.getElementById('inputNome').value;
+            const telemovel = document.getElementById('inputTelemovel').value;
+            const servico = document.getElementById('selectServicoModal').value;
+            const barbeiro = document.getElementById('selectBarbeiroModal').value;
+            const dataHoraRaw = document.getElementById('inputDataHora').value;
+
+            // Formatar a data para ficar legível
+            const dataObj = new Date(dataHoraRaw);
+            const dataFormatada = !isNaN(dataObj) ? dataObj.toLocaleString('pt-PT') : dataHoraRaw;
+
+            // Construir a mensagem elegante para o WhatsApp
+            const mensagem = `✂️ *NOVO PEDIDO DE MARCAÇÃO* ✂️\n\n` +
+                             `👤 *Nome:* ${nome}\n` +
+                             `📞 *Telemóvel:* ${telemovel}\n` +
+                             `💈 *Serviço:* ${servico}\n` +
+                             `👨‍🦱 *Barbeiro:* ${barbeiro}\n` +
+                             `📅 *Data/Hora:* ${dataFormatada}\n\n` +
+                             `_Enviado através do site oficial PointFino Barbershop._`;
+
+            // Número oficial da barbearia configurado diretamente
+            const numeroWhatsApp = "351961358317";
+
+            // Criar o link universal do WhatsApp
+            const urlWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensagem)}`;
+
+            // Abrir o WhatsApp do cliente com a mensagem preenchida
+            window.open(urlWhatsApp, '_blank');
+            
+            fecharModal();
+        }
+    </script>
+
+    <!-- AOS Script -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ once: true, duration: 800 });
+    </script>
+</body>
+</html>
