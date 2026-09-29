@@ -1,4 +1,5 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from functools import wraps
 import os
 import sqlite3
 import secrets
@@ -7,6 +8,8 @@ from zoneinfo import ZoneInfo
 import resend
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("FLASK_SECRET_KEY", secrets.token_hex(32))
+app.config["PERMANENT_SESSION_LIFETIME"] = timedelta(days=30)
 
 # Configuração de envio de confirmações de reserva/contacto via Resend
 resend.api_key = os.environ.get("RESEND_API_KEY", "")
@@ -21,6 +24,7 @@ CLOSING_TIME = time(19, 30)
 LAST_BOOKING_START = time(18, 30)
 BUSINESS_TZ = ZoneInfo("Europe/Lisbon")
 PUBLIC_BASE_URL = os.environ.get("PUBLIC_BASE_URL", "https://pointfino.pt").rstrip("/")
+ADMIN_PASSWORD = os.environ.get("ADMIN_PASSWORD", "")
 
 SERVICE_DURATIONS = {
     "Corte (12.00€)": 30,
@@ -79,6 +83,15 @@ def init_db():
 
 def business_now():
     return datetime.now(BUSINESS_TZ).replace(tzinfo=None)
+
+
+def admin_required(view):
+    @wraps(view)
+    def wrapped_view(*args, **kwargs):
+        if not session.get("admin_authenticated"):
+            return redirect(url_for("admin_login", next=request.path))
+        return view(*args, **kwargs)
+    return wrapped_view
 
 
 def parse_booking_start(raw_value):
@@ -195,7 +208,7 @@ def create_booking():
         return jsonify({
             'booking_id': cursor.lastrowid,
             'starts_at': start.isoformat(timespec='minutes'),
-            'cancel_url': f"{PUBLIC_BASE_URL}/booking/cancel/{cancel_token}",
+            'admin_url': f"{PUBLIC_BASE_URL}/admin",
         }), 201
     finally:
         connection.close()
@@ -227,6 +240,57 @@ def cancel_booking(token):
       <form method='post'><button style='background:#dc2626;color:#fff;border:0;border-radius:8px;padding:12px 18px;font-weight:bold'>Confirmar cancelamento</button></form>
     </main>
     """
+
+
+@app.route('/admin/login', methods=['GET', 'POST'])
+def admin_login():
+    if request.method == 'POST':
+        password = request.form.get('password', '')
+        if ADMIN_PASSWORD and secrets.compare_digest(password, ADMIN_PASSWORD):
+            session.clear()
+            session['admin_authenticated'] = True
+            session.permanent = bool(request.form.get('remember'))
+            return redirect(request.form.get('next') or url_for('admin_dashboard'))
+        return render_template('admin_login.html', error='Password incorreta ou não configurada.', next=request.form.get('next', ''))
+    return render_template('admin_login.html', error=None, next=request.args.get('next', ''))
+
+
+@app.get('/admin/logout')
+def admin_logout():
+    session.clear()
+    return redirect(url_for('admin_login'))
+
+
+@app.get('/admin')
+@admin_required
+def admin_dashboard():
+    selected_date = request.args.get('date', '').strip() or business_now().date().isoformat()
+    try:
+        date.fromisoformat(selected_date)
+    except ValueError:
+        selected_date = business_now().date().isoformat()
+
+    with get_db() as connection:
+        bookings = connection.execute(
+            """SELECT id, name, phone, service, barber, starts_at, ends_at, status
+               FROM bookings
+               WHERE starts_at >= ? AND starts_at < ?
+               ORDER BY starts_at ASC""",
+            (f"{selected_date}T00:00", f"{selected_date}T23:59"),
+        ).fetchall()
+    return render_template('admin.html', bookings=bookings, selected_date=selected_date)
+
+
+@app.post('/admin/bookings/<int:booking_id>/cancel')
+@admin_required
+def admin_cancel_booking(booking_id):
+    with get_db() as connection:
+        connection.execute(
+            "UPDATE bookings SET status = 'cancelled' WHERE id = ? AND status != 'cancelled'",
+            (booking_id,),
+        )
+        connection.commit()
+    return redirect(url_for('admin_dashboard', date=request.form.get('date', '')))
 
 
 init_db()
