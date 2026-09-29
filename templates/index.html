@@ -343,7 +343,7 @@
             <div>
                 <span class="text-base font-black text-white pointfino-neon tracking-wider block mb-2">POINTFINO BARBERSHOP</span>
                 <p class="font-light text-slate-400">Rua dos Cedros, Covilhã</p>
-                <p class="font-light text-slate-500 mt-1">Segunda a Sábado: 09:00 – 19:00</p>
+                <p class="font-light text-slate-500 mt-1">Segunda a Sábado: 09:00 – 19:30</p>
                 <p class="font-light text-slate-500">Pausa: 13:00 – 14:30 · Domingo encerrado</p>
             </div>
             <div class="flex flex-col items-center justify-center">
@@ -502,6 +502,8 @@
                              `👨‍🦱 *Barbeiro:* ${barbeiro}\n` +
                              `📅 *Data/Hora:* ${dataFormatada}\n\n` +
                              `🔖 *Reserva:* #${reserva.booking_id}\n\n` +
+                             `✅ O horário fica reservado automaticamente ao enviar este pedido.\n` +
+                             `❌ *Cancelar/libertar horário:* ${reserva.cancel_url}\n\n` +
                              `_Enviado através do site oficial PointFino Barbershop._`;
 
             // Número oficial da barbearia configurado diretamente
