@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, jsonify
 import os
 import sqlite3
+import secrets
 from datetime import datetime, date, time, timedelta
+from zoneinfo import ZoneInfo
 import resend
 
 app = Flask(__name__)
@@ -15,7 +17,10 @@ DB_PATH = os.environ.get("BOOKINGS_DB_PATH", os.path.join(BASE_DIR, "bookings.db
 OPENING_TIME = time(9, 0)
 MORNING_END = time(13, 0)
 AFTERNOON_START = time(14, 30)
-CLOSING_TIME = time(19, 0)
+CLOSING_TIME = time(19, 30)
+LAST_BOOKING_START = time(18, 30)
+BUSINESS_TZ = ZoneInfo("Europe/Lisbon")
+PUBLIC_BASE_URL = os.environ.get("PUBLIC_BASE_URL", "https://pointfino.pt").rstrip("/")
 
 SERVICE_DURATIONS = {
     "Corte (12.00€)": 30,
@@ -58,13 +63,22 @@ def init_db():
                 starts_at TEXT NOT NULL,
                 ends_at TEXT NOT NULL,
                 status TEXT NOT NULL DEFAULT 'requested',
+                cancel_token TEXT UNIQUE,
                 created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
             )
         """)
+        columns = {row[1] for row in connection.execute("PRAGMA table_info(bookings)").fetchall()}
+        if "cancel_token" not in columns:
+            connection.execute("ALTER TABLE bookings ADD COLUMN cancel_token TEXT")
+            connection.execute("CREATE UNIQUE INDEX IF NOT EXISTS idx_bookings_cancel_token ON bookings(cancel_token)")
         connection.execute(
             "CREATE INDEX IF NOT EXISTS idx_bookings_barber_time "
             "ON bookings(barber, starts_at, ends_at)"
         )
+
+
+def business_now():
+    return datetime.now(BUSINESS_TZ).replace(tzinfo=None)
 
 
 def parse_booking_start(raw_value):
@@ -94,7 +108,7 @@ def get_booked_ranges(barber, selected_date):
 
 def slot_is_available(start, duration, booked_ranges):
     end = start + timedelta(minutes=duration)
-    return start > datetime.now() and is_opening_hours(start, end) and not any(
+    return start > business_now() and is_opening_hours(start, end) and not any(
         start < booked_end and end > booked_start
         for booked_start, booked_end in booked_ranges
     )
@@ -121,7 +135,10 @@ def availability():
     slots = []
     for period_start, period_end in ((OPENING_TIME, MORNING_END), (AFTERNOON_START, CLOSING_TIME)):
         current = datetime.combine(chosen_date, period_start)
-        last_start = datetime.combine(chosen_date, period_end) - timedelta(minutes=duration)
+        last_start = min(
+            datetime.combine(chosen_date, period_end) - timedelta(minutes=duration),
+            datetime.combine(chosen_date, LAST_BOOKING_START),
+        )
         while current <= last_start:
             slots.append({
                 'value': current.strftime('%Y-%m-%dT%H:%M'),
@@ -151,7 +168,7 @@ def create_booking():
     except ValueError:
         return jsonify({'error': 'Horário inválido.'}), 400
     end = start + timedelta(minutes=duration)
-    if start <= datetime.now() or start.minute not in {0, 30} or not is_opening_hours(start, end):
+    if start <= business_now() or start.minute not in {0, 30} or not is_opening_hours(start, end) or start.time() > LAST_BOOKING_START:
         return jsonify({'error': 'Esse horário está fora do horário de funcionamento.'}), 400
 
     # BEGIN IMMEDIATE serializa as confirmações concorrentes e impede duas reservas no mesmo horário.
@@ -168,15 +185,48 @@ def create_booking():
             connection.rollback()
             return jsonify({'error': 'Este horário acabou de ser ocupado. Escolha outro.'}), 409
 
+        cancel_token = secrets.token_urlsafe(32)
         cursor = connection.execute(
-            """INSERT INTO bookings(name, phone, service, barber, starts_at, ends_at)
-               VALUES (?, ?, ?, ?, ?, ?)""",
-            (name, phone, service, barber, start.isoformat(timespec='minutes'), end.isoformat(timespec='minutes')),
+            """INSERT INTO bookings(name, phone, service, barber, starts_at, ends_at, cancel_token)
+               VALUES (?, ?, ?, ?, ?, ?, ?)""",
+            (name, phone, service, barber, start.isoformat(timespec='minutes'), end.isoformat(timespec='minutes'), cancel_token),
         )
         connection.commit()
-        return jsonify({'booking_id': cursor.lastrowid, 'starts_at': start.isoformat(timespec='minutes')}), 201
+        return jsonify({
+            'booking_id': cursor.lastrowid,
+            'starts_at': start.isoformat(timespec='minutes'),
+            'cancel_url': f"{PUBLIC_BASE_URL}/booking/cancel/{cancel_token}",
+        }), 201
     finally:
         connection.close()
+
+
+@app.route('/booking/cancel/<token>', methods=['GET', 'POST'])
+def cancel_booking(token):
+    with get_db() as connection:
+        booking = connection.execute(
+            "SELECT id, name, service, barber, starts_at, status FROM bookings WHERE cancel_token = ?",
+            (token,),
+        ).fetchone()
+        if booking is None:
+            return "<h1>Marcação não encontrada</h1><p>Esta ligação já não é válida.</p>", 404
+
+        if request.method == 'POST' and booking['status'] != 'cancelled':
+            connection.execute("UPDATE bookings SET status = 'cancelled' WHERE id = ?", (booking['id'],))
+            connection.commit()
+            booking = dict(booking)
+            booking['status'] = 'cancelled'
+
+    start_display = datetime.fromisoformat(booking['starts_at']).strftime('%d/%m/%Y às %H:%M')
+    if booking['status'] == 'cancelled':
+        return f"<main style='font-family:Arial;max-width:560px;margin:60px auto;padding:24px'><h1>Marcação cancelada</h1><p>O horário de {start_display} com {booking['barber']} voltou a ficar disponível.</p></main>"
+    return f"""
+    <main style='font-family:Arial;max-width:560px;margin:60px auto;padding:24px'>
+      <h1>Cancelar marcação</h1>
+      <p><strong>{booking['service']}</strong><br>{start_display}<br>Barbeiro: {booking['barber']}</p>
+      <form method='post'><button style='background:#dc2626;color:#fff;border:0;border-radius:8px;padding:12px 18px;font-weight:bold'>Confirmar cancelamento</button></form>
+    </main>
+    """
 
 
 init_db()
