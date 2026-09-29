@@ -55,9 +55,9 @@
             <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse shadow-[0_0_10px_#10b981]"></span>
             <span class="text-xl font-black tracking-wider pointfino-neon">POINTFINO</span>
         </div>
-        <button onclick="abrirModal('Qualquer Barbeiro')" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold text-xs px-5 py-2 rounded-full shadow-lg shadow-emerald-500/20 uppercase tracking-wider">
+        <a href="https://noona.pt/pointfinobarbershop" class="bg-gradient-to-r from-emerald-500 to-teal-600 text-slate-950 font-bold text-xs px-5 py-2 rounded-full shadow-lg shadow-emerald-500/20 uppercase tracking-wider">
             Reservar
-        </button>
+        </a>
     </nav>
 
     <!-- Hero Section -->
@@ -78,9 +78,9 @@
                 Precisão e estilo em mãos de confiança na Covilhã.
             </p>
             <div class="flex flex-col sm:flex-row justify-center gap-3">
-                <button onclick="abrirModal('Qualquer Barbeiro')" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-extrabold px-8 py-3.5 rounded-xl shadow-lg shadow-emerald-500/25 text-base">
+                <a href="https://noona.pt/pointfinobarbershop" class="bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-extrabold px-8 py-3.5 rounded-xl shadow-lg shadow-emerald-500/25 text-base">
                     Agendar Horário
-                </button>
+                </a>
                 <a href="#servicos" class="bg-slate-900 border border-slate-700 text-slate-200 font-semibold px-7 py-3.5 rounded-xl text-base hover:bg-slate-800 transition-colors">
                     Ver Tabela
                 </a>
@@ -142,9 +142,9 @@
                 <div class="p-6 text-center -mt-10 relative bg-slate-900/95 backdrop-blur border-t border-slate-800 rounded-t-2xl">
                     <h3 class="text-2xl font-bold text-white">{{ membro.nome }}</h3>
                     <p class="text-slate-400 text-xs font-light mt-0.5 mb-5">{{ membro.cargo }}</p>
-                    <button onclick="abrirModal('{{ membro.nome }}')" class="w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 px-4 rounded-xl shadow-lg shadow-emerald-500/20 text-sm transition-all uppercase tracking-wider">
+                    <a href="https://noona.pt/pointfinobarbershop" class="block w-full bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold py-3 px-4 rounded-xl shadow-lg shadow-emerald-500/20 text-sm transition-all uppercase tracking-wider">
                         Agendar com {{ membro.nome.split()[0] }}
-                    </button>
+                    </a>
                 </div>
             </div>
             {% endfor %}
@@ -343,8 +343,9 @@
             <div>
                 <span class="text-base font-black text-white pointfino-neon tracking-wider block mb-2">POINTFINO BARBERSHOP</span>
                 <p class="font-light text-slate-400">Rua dos Cedros, Covilhã</p>
-                <p class="font-light text-slate-500 mt-1">Segunda a Sábado: 09:00 – 19:30</p>
-                <p class="font-light text-slate-500">Pausa: 13:00 – 14:30 · Domingo encerrado</p>
+                <p class="font-light text-slate-500 mt-1">2ª a 6ª: 09:00 – 13:00 e 14:00 – 19:00</p>
+                <p class="font-light text-slate-500">Sábado: 10:00 – 14:00</p>
+                <p class="font-light text-slate-500">Domingos e feriados: encerrados</p>
             </div>
             <div class="flex flex-col items-center justify-center">
                 <span class="text-emerald-400 font-bold uppercase tracking-wider text-[10px] mb-1">Atendimento Telefónico</span>
