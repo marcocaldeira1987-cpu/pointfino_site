@@ -42,6 +42,9 @@
 
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .slot-btn { transition: all .2s ease; }
+        .slot-btn:disabled { cursor: not-allowed; opacity: .42; text-decoration: line-through; }
+        .slot-btn.selected { background: #10b981; color: #020617; border-color: #34d399; box-shadow: 0 0 18px rgba(16,185,129,.35); }
     </style>
 </head>
 <body class="antialiased selection:bg-emerald-500 selection:text-white">
@@ -285,20 +288,25 @@
                     <div>
                         <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">Serviço e Preço *</label>
                         <select id="selectServicoModal" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-3 py-3 text-slate-100 text-xs focus:outline-none focus:border-emerald-500">
-                            <option value="Corte (12.00€)">Corte — 12.00€</option>
-                            <option value="Barba (7.00€)">Barba — 7.00€</option>
-                            <option value="Corte e Barba (16.00€)">Corte e Barba — 16.00€</option>
-                            <option value="Corte e Barboterapia (17.00€)">Corte e Barboterapia — 17.00€</option>
-                            <option value="Barboterapia (8.00€)">Barboterapia — 8.00€</option>
-                            <option value="Corte, Barba e Sobrancelha (18.00€)">Corte, Barba e Sobrancelha — 18.00€</option>
-                            <option value="Corte e Sobrancelha (14.00€)">Corte e Sobrancelha — 14.00€</option>
-                            <option value="Corte de máquina (9.00€)">Corte de máquina — 9.00€</option>
-                            <option value="Cera Quente Ouvido / Nariz (4.00€)">Cera Quente Ouvido / Nariz — 4.00€</option>
-                            <option value="Esfoliação (5.00€)">Esfoliação — 5.00€</option>
-                            <option value="Black Mask (7.00€)">Black Mask — 7.00€</option>
-                            <option value="Luzes / Platinado (50.00€)">Luzes / Platinado — 50.00€</option>
-                            <option value="Pigmentação Cabelo / Barba (10.00€)">Pigmentação Cabelo / Barba — 10.00€</option>
-                            <option value="Mask Argan (7.00€)">Mask Argan — 7.00€</option>
+                            <option value="Corte (12.00€)">Corte — 30 min — 12.00€</option>
+                            <option value="Barba (7.00€)">Barba — 30 min — 7.00€</option>
+                            <option value="Corte e Barba (16.00€)">Corte e Barba — 60 min — 16.00€</option>
+                            <option value="Corte e Barboterapia (17.00€)">Corte e Barboterapia — 60 min — 17.00€</option>
+                            <option value="Barboterapia (8.00€)">Barboterapia — 30 min — 8.00€</option>
+                            <option value="Corte, Barba e Sobrancelha (18.00€)">Corte, Barba e Sobrancelha — 60 min — 18.00€</option>
+                            <option value="Corte e Sobrancelha (14.00€)">Corte e Sobrancelha — 30 min — 14.00€</option>
+                            <option value="Corte de máquina (9.00€)">Corte de máquina — 30 min — 9.00€</option>
+                            <option value="Cera quente ouvido (4.00€)">Cera quente ouvido — 30 min — 4.00€</option>
+                            <option value="Cera quente nariz (4.00€)">Cera quente nariz — 30 min — 4.00€</option>
+                            <option value="Cera quente nariz e ouvido (7.00€)">Cera quente nariz e ouvido — 60 min — 7.00€</option>
+                            <option value="Esfoliação (5.00€)">Esfoliação — 30 min — 5.00€</option>
+                            <option value="Black Mask (7.00€)">Black Mask — 30 min — 7.00€</option>
+                            <option value="Luzes (madeixas) (50.00€)">Luzes (madeixas) — 150 min — 50.00€</option>
+                            <option value="Platinado (50.00€)">Platinado — 150 min — 50.00€</option>
+                            <option value="Pigmentação cabelo (10.00€)">Pigmentação cabelo — 30 min — 10.00€</option>
+                            <option value="Pigmentação barba (10.00€)">Pigmentação barba — 30 min — 10.00€</option>
+                            <option value="Corte, barboterapia e sobrancelha (19.00€)">Corte, barboterapia e sobrancelha — 60 min — 19.00€</option>
+                            <option value="Mask Argan (7.00€)">Mask Argan — 30 min — 7.00€</option>
                         </select>
                     </div>
                     <div>
@@ -310,8 +318,17 @@
                     </div>
                 </div>
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">Data e Hora Preferida *</label>
-                    <input type="datetime-local" id="inputDataHora" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-emerald-500">
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-1">Escolhe o dia *</label>
+                    <input type="date" id="inputData" required class="w-full bg-slate-950 border border-slate-800 rounded-xl px-4 py-3 text-slate-100 text-sm focus:outline-none focus:border-emerald-500">
+                </div>
+                <div>
+                    <div class="flex items-center justify-between mb-2">
+                        <label class="block text-xs font-bold uppercase tracking-wider text-slate-300">Horários disponíveis *</label>
+                        <span id="duracaoServico" class="text-[10px] text-emerald-400"></span>
+                    </div>
+                    <div id="listaHorarios" class="grid grid-cols-3 sm:grid-cols-4 gap-2"></div>
+                    <p id="mensagemHorarios" class="text-xs text-slate-500 mt-2">Escolhe um dia para consultar os horários.</p>
+                    <input type="hidden" id="inputDataHora" required>
                 </div>
                 <button type="submit" class="w-full bg-gradient-to-r from-emerald-500 to-teal-500 text-slate-950 font-black py-3.5 rounded-xl shadow-lg text-sm uppercase tracking-wider flex items-center justify-center gap-2">
                     <span>Enviar Pedido por WhatsApp</span>
@@ -326,7 +343,8 @@
             <div>
                 <span class="text-base font-black text-white pointfino-neon tracking-wider block mb-2">POINTFINO BARBERSHOP</span>
                 <p class="font-light text-slate-400">Rua dos Cedros, Covilhã</p>
-                <p class="font-light text-slate-500 mt-1">Segunda a Sábado: 09:30 – 19:30</p>
+                <p class="font-light text-slate-500 mt-1">Segunda a Sábado: 09:00 – 19:00</p>
+                <p class="font-light text-slate-500">Pausa: 13:00 – 14:30 · Domingo encerrado</p>
             </div>
             <div class="flex flex-col items-center justify-center">
                 <span class="text-emerald-400 font-bold uppercase tracking-wider text-[10px] mb-1">Atendimento Telefónico</span>
@@ -349,10 +367,19 @@
 
     <!-- Scripts de Interação e WhatsApp -->
     <script>
+        let horarioSelecionado = '';
+
+        function dataLocalHoje() {
+            const agora = new Date();
+            const offset = agora.getTimezoneOffset() * 60000;
+            return new Date(agora.getTime() - offset).toISOString().slice(0, 10);
+        }
+
         function abrirModal(barbeiro) {
             const modal = document.getElementById('modalAgendamento');
             const select = document.getElementById('selectBarbeiroModal');
             const titulo = document.getElementById('tituloModal');
+            const data = document.getElementById('inputData');
 
             if(barbeiro !== 'Qualquer Barbeiro') {
                 select.value = barbeiro;
@@ -361,7 +388,12 @@
                 titulo.innerText = "Garante a Tua Cadeira";
             }
 
+            data.min = dataLocalHoje();
+            if (!data.value) data.value = data.min;
+            horarioSelecionado = '';
+            document.getElementById('inputDataHora').value = '';
             modal.classList.remove('hidden');
+            atualizarHorarios();
         }
 
         function fecharModal() {
@@ -369,7 +401,62 @@
             modal.classList.add('hidden');
         }
 
-        function enviarParaWhatsApp(event) {
+        async function atualizarHorarios() {
+            const data = document.getElementById('inputData').value;
+            const barbeiro = document.getElementById('selectBarbeiroModal').value;
+            const servico = document.getElementById('selectServicoModal').value;
+            const lista = document.getElementById('listaHorarios');
+            const mensagem = document.getElementById('mensagemHorarios');
+            const duracao = document.getElementById('duracaoServico');
+            horarioSelecionado = '';
+            document.getElementById('inputDataHora').value = '';
+            if (!data) return;
+
+            lista.innerHTML = '<span class="col-span-full text-xs text-slate-500">A consultar disponibilidade...</span>';
+            try {
+                const resposta = await fetch(`/api/availability?barbeiro=${encodeURIComponent(barbeiro)}&date=${data}&servico=${encodeURIComponent(servico)}`);
+                const resultado = await resposta.json();
+                if (!resposta.ok) throw new Error(resultado.error);
+                duracao.textContent = `${resultado.duration} min`;
+                if (resultado.closed) {
+                    lista.innerHTML = '<span class="col-span-full text-xs text-amber-400">Encerrado aos domingos.</span>';
+                    mensagem.textContent = 'Escolhe um dia de segunda-feira a sábado.';
+                    mensagem.className = 'text-xs text-amber-400 mt-2';
+                    return;
+                }
+                lista.innerHTML = '';
+                const disponiveis = resultado.slots.filter(slot => slot.available).length;
+                resultado.slots.forEach(slot => {
+                    const botao = document.createElement('button');
+                    botao.type = 'button';
+                    botao.textContent = slot.label;
+                    botao.disabled = !slot.available;
+                    botao.className = 'slot-btn rounded-lg border border-slate-700 bg-slate-950 px-2 py-2 text-sm font-bold text-slate-200';
+                    botao.title = slot.available ? 'Selecionar horário' : 'Horário ocupado';
+                    botao.onclick = () => {
+                        document.querySelectorAll('.slot-btn.selected').forEach(item => item.classList.remove('selected'));
+                        botao.classList.add('selected');
+                        horarioSelecionado = slot.value;
+                        document.getElementById('inputDataHora').value = slot.value;
+                        mensagem.textContent = `Horário escolhido: ${slot.label}`;
+                        mensagem.className = 'text-xs text-emerald-400 mt-2';
+                    };
+                    lista.appendChild(botao);
+                });
+                mensagem.textContent = disponiveis ? 'Os horários riscados já estão ocupados.' : 'Não existem horários disponíveis neste dia.';
+                mensagem.className = disponiveis ? 'text-xs text-slate-500 mt-2' : 'text-xs text-amber-400 mt-2';
+            } catch (erro) {
+                lista.innerHTML = '';
+                mensagem.textContent = erro.message || 'Não foi possível consultar os horários.';
+                mensagem.className = 'text-xs text-red-400 mt-2';
+            }
+        }
+
+        document.getElementById('inputData').addEventListener('change', atualizarHorarios);
+        document.getElementById('selectBarbeiroModal').addEventListener('change', atualizarHorarios);
+        document.getElementById('selectServicoModal').addEventListener('change', atualizarHorarios);
+
+        async function enviarParaWhatsApp(event) {
             event.preventDefault(); // Evita recarregar a página
 
             const nome = document.getElementById('inputNome').value;
@@ -377,6 +464,31 @@
             const servico = document.getElementById('selectServicoModal').value;
             const barbeiro = document.getElementById('selectBarbeiroModal').value;
             const dataHoraRaw = document.getElementById('inputDataHora').value;
+
+            if (!dataHoraRaw) {
+                alert('Escolhe primeiro um horário disponível.');
+                return;
+            }
+
+            const botaoEnviar = event.submitter;
+            botaoEnviar.disabled = true;
+            botaoEnviar.querySelector('span').textContent = 'A confirmar horário...';
+            let reserva;
+            try {
+                const resposta = await fetch('/api/bookings', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({nome, telemovel, servico, barbeiro, data_hora: dataHoraRaw})
+                });
+                reserva = await resposta.json();
+                if (!resposta.ok) throw new Error(reserva.error || 'Não foi possível confirmar o horário.');
+            } catch (erro) {
+                alert(erro.message);
+                botaoEnviar.disabled = false;
+                botaoEnviar.querySelector('span').textContent = 'Enviar Pedido por WhatsApp';
+                atualizarHorarios();
+                return;
+            }
 
             // Formatar a data para ficar legível
             const dataObj = new Date(dataHoraRaw);
@@ -389,6 +501,7 @@
                              `💈 *Serviço:* ${servico}\n` +
                              `👨‍🦱 *Barbeiro:* ${barbeiro}\n` +
                              `📅 *Data/Hora:* ${dataFormatada}\n\n` +
+                             `🔖 *Reserva:* #${reserva.booking_id}\n\n` +
                              `_Enviado através do site oficial PointFino Barbershop._`;
 
             // Número oficial da barbearia configurado diretamente
@@ -400,6 +513,8 @@
             // Abrir o WhatsApp do cliente com a mensagem preenchida
             window.open(urlWhatsApp, '_blank');
             
+            botaoEnviar.disabled = false;
+            botaoEnviar.querySelector('span').textContent = 'Enviar Pedido por WhatsApp';
             fecharModal();
         }
     </script>
