@@ -45,6 +45,7 @@
         .slot-btn { transition: all .2s ease; }
         .slot-btn:disabled { cursor: not-allowed; opacity: .42; text-decoration: line-through; }
         .slot-btn.selected { background: #10b981; color: #020617; border-color: #34d399; box-shadow: 0 0 18px rgba(16,185,129,.35); }
+        .gallery-stack-card { will-change: transform; scroll-margin-top: 1.5rem; }
     </style>
 </head>
 <body class="antialiased selection:bg-emerald-500 selection:text-white">
@@ -159,8 +160,8 @@
             <p class="text-slate-400 text-xs mt-1">Desliza para baixo e descobre cada trabalho.</p>
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 px-4 max-w-5xl mx-auto">
-            <div class="gallery-card w-full h-[68vh] min-h-[460px] md:h-[420px] rounded-3xl overflow-hidden relative border border-slate-800 group shadow-2xl" data-aos="fade-up">
+        <div class="relative max-w-3xl mx-auto px-4 pb-[28vh]">
+            <div class="gallery-stack-card sticky top-6 w-full h-[68vh] min-h-[460px] rounded-3xl overflow-hidden relative z-10 border border-slate-800 group shadow-2xl mb-10" data-aos="fade-up">
                 <img src="/static/corte1.jpg" alt="Corte 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
                 <div class="absolute bottom-6 left-6 right-6">
@@ -168,7 +169,7 @@
                     <h3 class="text-xl font-bold text-white mt-2">Estilo Assinatura</h3>
                 </div>
             </div>
-            <div class="gallery-card w-full h-[68vh] min-h-[460px] md:h-[420px] rounded-3xl overflow-hidden relative border border-slate-800 group shadow-2xl" data-aos="fade-up" data-aos-delay="100">
+            <div class="gallery-stack-card sticky top-6 w-full h-[68vh] min-h-[460px] rounded-3xl overflow-hidden relative z-20 border border-slate-800 group shadow-2xl mb-10" data-aos="fade-up" data-aos-delay="100">
                 <img src="/static/corte2.jpg" alt="Corte 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
                 <div class="absolute bottom-6 left-6 right-6">
@@ -176,7 +177,7 @@
                     <h3 class="text-xl font-bold text-white mt-2">Textura & Linhas</h3>
                 </div>
             </div>
-            <div class="gallery-card w-full h-[68vh] min-h-[460px] md:h-[420px] rounded-3xl overflow-hidden relative border border-slate-800 group shadow-2xl" data-aos="fade-up" data-aos-delay="200">
+            <div class="gallery-stack-card sticky top-6 w-full h-[68vh] min-h-[460px] rounded-3xl overflow-hidden relative z-30 border border-slate-800 group shadow-2xl mb-10" data-aos="fade-up" data-aos-delay="200">
                 <img src="/static/corte3.jpg" alt="Corte 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
                 <div class="absolute bottom-6 left-6 right-6">
@@ -184,7 +185,7 @@
                     <h3 class="text-xl font-bold text-white mt-2">Elegância Intemporal</h3>
                 </div>
             </div>
-            <div class="gallery-card w-full h-[68vh] min-h-[460px] md:h-[420px] rounded-3xl overflow-hidden relative border border-slate-800 group shadow-2xl" data-aos="fade-up" data-aos-delay="300">
+            <div class="gallery-stack-card sticky top-6 w-full h-[68vh] min-h-[460px] rounded-3xl overflow-hidden relative z-40 border border-slate-800 group shadow-2xl mb-10" data-aos="fade-up" data-aos-delay="300">
                 <img src="/static/corte4.jpg" alt="Corte 4" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
                 <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-transparent"></div>
                 <div class="absolute bottom-6 left-6 right-6">
